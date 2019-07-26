@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
 const client = jwksClient({
-  jwksUri: 'https://ledugani.auth0.com/.well-known/jwks.json'
+  jwksUri: 'https://tdugan.auth0.com/.well-known/jwks.json'
 });
 
 const players = [];

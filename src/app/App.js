@@ -6,8 +6,8 @@ import io from 'socket.io-client';
 import * as Auth0 from 'auth0-web';
 
 Auth0.configure({
-  domain: 'ledugani.auth0.com',
-  clientID: '9DKLVnXJ5KgKz3jCi7qvYAPbL9XZAtMX',
+  domain: 'tdugan.auth0.com',
+  clientID: 'LnjFUVtBbQN0K7R7631mSF0ARPBQBIN5',
   redirectUri: 'http://localhost:3000/',
   responseType: 'token id_token',
   scope: 'openid profile manage:points',
