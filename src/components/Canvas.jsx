@@ -14,16 +14,7 @@ import { signIn } from 'auth0-web';
 const Canvas = (props) => {
   const gameHeight = 1200;
   const viewBox = [window.innerWidth / -2, 100 - gameHeight, window.innerWidth, gameHeight];
-  const leaderboard = [
-    { id: 'd4', maxScore: 82, name: 'Ado Kukic', picture: 'https://twitter.com/KukicAdo/photo', },
-    { id: 'a1', maxScore: 235, name: 'Bruno Krebs', picture: 'https://twitter.com/brunoskrebs/photo', },
-    { id: 'c3', maxScore: 99, name: 'Diego Poza', picture: 'https://twitter.com/diegopoza/photo', },
-    { id: 'b2', maxScore: 129, name: 'Jeana Tahnk', picture: 'https://twitter.com/jeanatahnk/photo', },
-    { id: 'e5', maxScore: 34, name: 'Jenny Obrien', picture: 'https://twitter.com/jenny_obrien/photo', },
-    { id: 'f6', maxScore: 153, name: 'Kim Maida', picture: 'https://twitter.com/KimMaida/photo', },
-    { id: 'g7', maxScore: 55, name: 'Tom Dugan', picture: 'https://twitter.com/LeDugani/photo', },
-    { id: 'h8', maxScore: 146, name: 'Sebastian Peyrott', picture: 'https://twitter.com/speyrott/photo', },
-  ];
+
   return (
     <svg
       id="aliens-go-home-canvas"
@@ -42,13 +33,6 @@ const Canvas = (props) => {
       <CannonBase />
       <CurrentScore score={15} />
 
-      { ! props.gameState.started &&
-        <g>
-          <StartGame onClick={() => props.startGame()} />
-          <Title />
-        </g>
-      }
-
       { props.gameState.started &&
         <g>
           <FlyingObject position={{x: -150, y: -300}}/>
@@ -60,7 +44,7 @@ const Canvas = (props) => {
         <g>
           <StartGame onClick={() => props.startGame()} />
           <Title />
-          <Leaderboard currentPlayer={leaderboard[6]} authenticate={signIn} leaderboard={leaderboard} />
+          <Leaderboard currentPlayer={props.currentPlayer} authenticate={signIn} leaderboard={props.players} />
         </g>
       }
 
@@ -91,6 +75,23 @@ Canvas.propTypes = {
   }).isRequired,
   trackMouse: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired,
+  currentPlayer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    maxScore: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  }),
+  players: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    maxScore: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  })),
+};
+
+Canvas.defaultProps = {
+  currentPlayer: null,
+  players: null,
 };
 
 export default Canvas;
