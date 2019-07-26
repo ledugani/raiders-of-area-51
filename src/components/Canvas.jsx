@@ -8,10 +8,13 @@ import CurrentScore from './CurrentScore'
 import FlyingObject from './FlyingObject';
 import StartGame from './StartGame';
 import Title from './Title';
+import Leaderboard from './Leaderboard';
+import { signIn } from 'auth0-web';
 
 const Canvas = (props) => {
   const gameHeight = 1200;
   const viewBox = [window.innerWidth / -2, 100 - gameHeight, window.innerWidth, gameHeight];
+
   return (
     <svg
       id="aliens-go-home-canvas"
@@ -30,17 +33,18 @@ const Canvas = (props) => {
       <CannonBase />
       <CurrentScore score={15} />
 
-      { ! props.gameState.started &&
-        <g>
-          <StartGame onClick={() => props.startGame()} />
-          <Title />
-        </g>
-      }
-
       { props.gameState.started &&
         <g>
           <FlyingObject position={{x: -150, y: -300}}/>
           <FlyingObject position={{x: 150, y: -300}}/>
+        </g>
+      }
+
+      { ! props.gameState.started &&
+        <g>
+          <StartGame onClick={() => props.startGame()} />
+          <Title />
+          <Leaderboard currentPlayer={props.currentPlayer} authenticate={signIn} leaderboard={props.players} />
         </g>
       }
 
@@ -71,6 +75,23 @@ Canvas.propTypes = {
   }).isRequired,
   trackMouse: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired,
+  currentPlayer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    maxScore: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  }),
+  players: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    maxScore: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  })),
+};
+
+Canvas.defaultProps = {
+  currentPlayer: null,
+  players: null,
 };
 
 export default Canvas;
